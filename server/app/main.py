@@ -20,7 +20,6 @@ from app.services.shop import shop_service
 
 logger = logging.getLogger(__name__)
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
