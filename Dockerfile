@@ -4,7 +4,7 @@ FROM python:3.13.1-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
 # System dependencies (NO unixodbc here)
-RUN apt-get update && apt-get install -y \-
+RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
     gcc \

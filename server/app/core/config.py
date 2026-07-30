@@ -28,8 +28,7 @@ class Settings(BaseSettings):
     @property
     def REDIS_URL(self) -> str:
         auth = f":{quote(self.REDIS_PASSWORD)}@" if self.REDIS_PASSWORD else ""
-# {auth}
-        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+        return f"redis://{auth}{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
 
     FIREBASE_SERVICE_ACCOUNT_BASE64: str
     FIREBASE_STORAGE_BUCKET: str = ""
