@@ -12,7 +12,6 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     REFRESH_TOKEN_EXPIRE_DAYS: int
 
-    # SMTP email (Gmail: use an App Password, not your account password)
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
@@ -28,7 +27,7 @@ class Settings(BaseSettings):
     @property
     def REDIS_URL(self) -> str:
         auth = f":{quote(self.REDIS_PASSWORD)}@" if self.REDIS_PASSWORD else ""
-        return f"redis://{auth}{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}" #{auth}
 
     FIREBASE_SERVICE_ACCOUNT_BASE64: str = ""
     FIREBASE_STORAGE_BUCKET: str = ""

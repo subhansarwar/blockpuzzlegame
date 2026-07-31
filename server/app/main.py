@@ -35,7 +35,7 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title=settings.APP_NAME, version="0.1.0", lifespan=lifespan)
+app = FastAPI(title=settings.APP_NAME, version="0.1.1", lifespan=lifespan)
 
 # _cors_wildcard = settings.BACKEND_CORS_ORIGINS == ["*"]
 # if _cors_wildcard:
@@ -51,6 +51,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+async def root():
+    return {"message": settings.APP_NAME, "Version": "0.1.1"}
+
 
 app.include_router(api_router)
 
@@ -94,4 +99,4 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "app": settings.APP_NAME, "Version": "0.1.0"}
+    return {"status": "ok", "app": settings.APP_NAME, "Version": "0.1.1"}

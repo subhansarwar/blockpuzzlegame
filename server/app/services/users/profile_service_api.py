@@ -38,9 +38,9 @@ async def get_profile(db: AsyncSession, user: User) -> ProfileResponse:
 
 async def update_name(db: AsyncSession, user: User, new_name: str) -> ProfileResponse:
     if new_name != user.name:
-        result = await db.execute(select(User.id).where(User.name == new_name))
-        if result.scalar_one_or_none():
-            raise HTTPException(status.HTTP_409_CONFLICT, detail="Username already taken")
+        # result = await db.execute(select(User.id).where(User.name == new_name))
+        # if result.scalar_one_or_none():
+        #     raise HTTPException(status.HTTP_409_CONFLICT, detail="Username already taken")
         user.name = new_name
         await audit_service.log_event(db, user_id=user.id, event="profile_update", status="success", detail="name")
         await db.commit()

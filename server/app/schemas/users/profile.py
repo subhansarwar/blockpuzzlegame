@@ -4,8 +4,7 @@ from uuid import UUID
 from datetime import datetime
 from pydantic import BaseModel, field_validator
 
-_USERNAME_RE = re.compile(r"^[a-zA-Z0-9_]{3,30}$")
-
+_USERNAME_RE = re.compile(r"^[A-Za-z0-9 _'-]{3,30}$")
 
 class nameUpdateRequest(BaseModel):
     name: str

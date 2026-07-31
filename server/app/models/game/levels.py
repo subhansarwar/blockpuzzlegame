@@ -11,9 +11,7 @@ class UserLevelState(Base):
     """One row per user: current unlocked level + this mode's own score/best_score."""
     __tablename__ = "user_level_state"
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
-    )
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     current_level: Mapped[int] = mapped_column(Integer, nullable=False, default=1)  # next level to play, 1-100
     best_score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     last_score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
@@ -24,14 +22,11 @@ class UserLevelState(Base):
 
 
 class LevelProgress(Base):
-    """One row per (user, level) once that level has been completed."""
     __tablename__ = "level_progress"
     __table_args__ = (UniqueConstraint("user_id", "level_number", name="uq_level_progress_user_level"),)
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
-    )
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     level_number: Mapped[int] = mapped_column(Integer, nullable=False)
     score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     points_earned: Mapped[int] = mapped_column(Integer, nullable=False, default=0)

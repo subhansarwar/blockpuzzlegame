@@ -8,12 +8,9 @@ from app.core.database import Base
 
 
 class UserGameStats(Base):
-    """Aggregate cross-mode stats + the two spendable/lifetime economies (points, coins)."""
     __tablename__ = "user_game_stats"
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
-    )
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
 
     all_time_high_score: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     max_combo: Mapped[int] = mapped_column(Integer, nullable=False, default=0)

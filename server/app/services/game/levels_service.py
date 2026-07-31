@@ -10,8 +10,8 @@ from app.schemas.game.levels import LevelCompleteResponse, LevelInfo, LevelListR
 from app.services.game import stats_service
 
 MAX_LEVEL = 100
-COINS_PER_LEVEL = 500
-POINTS_PER_LEVEL = 10
+COINS_PER_LEVEL = 1000
+POINTS_PER_LEVEL = 12
 
 # Cycled by level number so consecutive levels don't repeat the same line.
 _POPUP_MESSAGES = [
@@ -47,7 +47,7 @@ def milestone_coins(level_number: int) -> int:
     """
     total = 0
     for n in range(1, level_number + 1):
-        total = (total + COINS_PER_LEVEL) * n
+        total = (COINS_PER_LEVEL) * n
     return total
 
 
