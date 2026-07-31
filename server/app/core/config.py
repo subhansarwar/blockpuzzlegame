@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: str
     REDIS_KEY_PREFIX: str = "blockpuzzle"
 
+
     @property
     def REDIS_URL(self) -> str:
         auth = f":{quote(self.REDIS_PASSWORD)}@" if self.REDIS_PASSWORD else ""
