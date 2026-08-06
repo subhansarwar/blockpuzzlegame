@@ -54,11 +54,10 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": settings.APP_NAME, "Version": "0.1.1"}
+    return {"message": settings.APP_NAME, "Version": "0.1.2"}
 
 
 app.include_router(api_router)
-
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -99,4 +98,4 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "app": settings.APP_NAME, "Version": "0.1.1"}
+    return {"status": "ok", "app": settings.APP_NAME, "Version": "0.1.2"}
