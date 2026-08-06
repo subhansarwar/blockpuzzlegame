@@ -6,16 +6,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.redis import redis_client
+from app.core.redis import redis_client, rkey
 from app.core.security import generate_otp_code, hash_password, verify_password
 from app.models.users.otp import EmailOTP
 from app.services.users.email_service import send_otp_email
 
-_COOLDOWN_PREFIX = "otp:cooldown:"
-
 
 async def _check_cooldown(email: str) -> None:
-    key = f"{_COOLDOWN_PREFIX}{email}"
+    key = rkey("otp", "cooldown", email)
     ttl = await redis_client.ttl(key)
     if ttl and ttl > 0:
         raise HTTPException(
@@ -25,7 +23,7 @@ async def _check_cooldown(email: str) -> None:
 
 
 async def _set_cooldown(email: str) -> None:
-    await redis_client.set(f"{_COOLDOWN_PREFIX}{email}", "1", ex=settings.OTP_RESEND_COOLDOWN_SECONDS)
+    await redis_client.set(rkey("otp", "cooldown", email), "1", ex=settings.OTP_RESEND_COOLDOWN_SECONDS)
 
 
 async def issue_otp(db: AsyncSession, email: str, *, purpose: str = "verify") -> None:

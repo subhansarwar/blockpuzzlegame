@@ -8,7 +8,7 @@ import bcrypt
 from jose import jwt
 
 from app.core.config import settings
-from app.core.redis import redis_client
+from app.core.redis import redis_client, rkey
 
 logger = logging.getLogger(__name__)
 
@@ -64,15 +64,12 @@ def create_refresh_token(user_id: str) -> tuple[str, str, datetime]:
     )
 
 
-_BLOCKLIST_PREFIX = "auth:blocklist:jti:"
-
-
 async def blocklist_token(jti: str, expires_at: datetime) -> None:
     """Revoke a token immediately (logout) by blocking its jti until it would have expired anyway."""
     ttl = int((expires_at - datetime.now(timezone.utc)).total_seconds())
     if ttl > 0:
-        await redis_client.set(f"{_BLOCKLIST_PREFIX}{jti}", "1", ex=ttl)
+        await redis_client.set(rkey("auth", "blocklist", "jti", jti), "1", ex=ttl)
 
 
 async def is_token_blocklisted(jti: str) -> bool:
-    return bool(await redis_client.exists(f"{_BLOCKLIST_PREFIX}{jti}"))
+    return bool(await redis_client.exists(rkey("auth", "blocklist", "jti", jti)))

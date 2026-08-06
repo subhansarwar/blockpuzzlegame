@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import HTTPException, status
 
 from app.core.config import settings
-from app.core.redis import redis_client
+from app.core.redis import redis_client, rkey
 from app.models.shop.shop_item import ShopItem, ShopItemType
 from app.models.shop.purchase import UserPurchase
 from app.models.shop.ad_reward_log import AdRewardLog, AdRewardContext
@@ -22,8 +22,6 @@ from app.schemas.shop.shop import (
 )
 from app.services.game import stats_service
 from app.services.users import audit_service
-
-_AD_LIMIT_PREFIX = "shop:ad_count:"
 
 _DEFAULT_ITEMS = [
     dict(code="extra_life", item_type=ShopItemType.consumable, name="Extra Life",
@@ -43,7 +41,7 @@ _DEFAULT_ITEMS = [
 
 def _today_key(user_id) -> str:
     today = datetime.now(timezone.utc).date().isoformat()
-    return f"{_AD_LIMIT_PREFIX}{user_id}:{today}"
+    return rkey("shop", "ad_count", str(user_id), today)
 
 
 async def ensure_seeded(db: AsyncSession) -> None:

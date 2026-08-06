@@ -27,6 +27,13 @@ celery_app.conf.update(
     task_track_started=True,
     broker_connection_retry_on_startup=True,
     task_default_retry_delay=30,
+    # Dedicated queue/exchange so this app's tasks can't be picked up by (or collide
+    # with) another app's Celery workers sharing the same Redis instance/DB — the
+    # default queue name is literally "celery" for every app unless overridden here.
+    task_default_queue=f"{settings.REDIS_KEY_PREFIX}_default",
+    task_default_exchange=f"{settings.REDIS_KEY_PREFIX}_default",
+    task_default_routing_key=f"{settings.REDIS_KEY_PREFIX}_default",
+    result_backend_transport_options={"global_keyprefix": f"{settings.REDIS_KEY_PREFIX}:celery-results:"},
 )
 
 celery_app.conf.beat_schedule = {
