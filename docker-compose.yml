@@ -7,7 +7,7 @@ services:
     env_file:
       - ./server/.env
     environment:
-      REDIS_URL: redis://YOUR_DROPLET_IP:6379/0
+      REDIS_URL: redis://localhost:6379/0
     restart: always
     command:
       [
@@ -27,7 +27,7 @@ services:
     env_file:
       - ./server/.env
     environment:
-      REDIS_URL: redis://YOUR_DROPLET_IP:6379/0
+      REDIS_URL: redis://localhost:6379/0
     restart: always
     command:
       [
