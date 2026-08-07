@@ -7,6 +7,7 @@ from app.core.config import settings
 _pool = ConnectionPool.from_url(settings.REDIS_URL, decode_responses=True)
 redis_client = Redis(connection_pool=_pool)
 
+
 async def get_redis() -> AsyncGenerator[Redis, None]:
     yield redis_client
 

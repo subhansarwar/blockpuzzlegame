@@ -7,6 +7,8 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
+print(settings.REDIS_URL)
+
 celery_app = Celery(
     "block_game",
     broker=settings.REDIS_URL,
